@@ -35,9 +35,7 @@ class PartnerResource extends Resource
                     ->label('CPF ou CNPJ')
                     ->required()
                     ->maxLength(18)
-                    ->mask('###.###.###/####-##') 
-
-                ,
+                    ->mask('###.###.###/####-##'),
 
                 Select::make('category')
                 ->label('Categoria')
@@ -48,7 +46,6 @@ class PartnerResource extends Resource
                 ->required()
                 ->reactive()
                 ->afterStateUpdated(function (callable $set, $state) {
-                    // Limpar o campo "other_category" quando a categoria não for "Outros"
                     if ($state !== 'Outros') {
                         $set('other_category', null);
                     }
@@ -58,6 +55,7 @@ class PartnerResource extends Resource
                 ->label('Especificar Parceria')
                 ->nullable()
                 ->visible(fn ($get) => $get('category') === 'Outros') // Só será visível quando "Outros" for selecionado
+                ->required()
                 ->maxLength(255),
             ]);
     }

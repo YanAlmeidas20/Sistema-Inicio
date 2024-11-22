@@ -47,6 +47,7 @@ class AccountPayableResource extends Resource
                     ->label('Fornecedor')
                     ->options(Partner::all()->pluck('name', 'id')) 
                     ->searchable()
+                    ->required()
                     ->placeholder('Selecione um fornecedor'),
             ]);
     }

@@ -16,7 +16,12 @@ return new class extends Migration
             $table->string('name');
             $table->date('birth_date'); // Aniversario
             $table->string('cpf')->unique();
+            $table->string('email')->unique();
             $table->string('role'); // Role/Function
+            $table->string('salary');
+            $table->string('rg')->unique();
+            $table->string('admission_date');
+            $table->string('phone')->nullable();
             $table->enum('type', ['admin', 'common']); // Admin or Common
             $table->timestamps();
         });        

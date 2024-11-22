@@ -112,4 +112,8 @@ return [
 
     'password_timeout' => env('AUTH_PASSWORD_TIMEOUT', 10800),
 
+    'auth' => [
+    'guard' => 'web', // Ou o guard que você está usando para autenticação
+],
+
 ];
