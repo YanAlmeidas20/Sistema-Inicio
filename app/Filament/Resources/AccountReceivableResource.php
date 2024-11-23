@@ -4,19 +4,21 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\AccountReceivableResource\Pages;
 use App\Models\AccountReceivable;
-use App\Models\Partner; // Usando o modelo de parceiros como devedores
-use Filament\Forms; // Corrigir importação do Filament\Forms
-use Filament\Forms\Form; // Corrigir importação do Form
+use App\Models\Partner; 
+use Filament\Forms; 
+use Filament\Forms\Form; 
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Toggle;
-use Filament\Forms\Components\Select; // Importar o campo Select
+use Filament\Forms\Components\Select; 
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\BooleanColumn;
+use Filament\Forms\Components\FileUpload;
 use Filament\Tables\Table;
-use Filament\Tables\Filters\SelectFilter; // Filtro para devedores
+use Filament\Tables\Filters\SelectFilter; 
 
 class AccountReceivableResource extends Resource
 {
@@ -33,7 +35,7 @@ class AccountReceivableResource extends Resource
                     ->label('Descrição')
                     ->required()
                     ->maxLength(255),
-                // Campo para o valor com formato de moeda
+                
                 Forms\Components\TextInput::make('amount')
                     ->label('Valor')
                     ->required()
@@ -45,13 +47,20 @@ class AccountReceivableResource extends Resource
                 Forms\Components\Toggle::make('is_paid')
                     ->label('Pago')
                     ->required(),
-                // Campo para selecionar o devedor
-                Select::make('partner_id')  // Campo para selecionar o devedor
+                
+                Select::make('partner_id') 
                     ->label('Devedor')
-                    ->options(Partner::all()->pluck('name', 'id')) // Lista de devedores
-                    ->searchable() // Permite pesquisa
-                    ->required() // Tornar obrigatório
+                    ->options(Partner::all()->pluck('name', 'id')) 
+                    ->searchable()
+                    ->required() 
                     ->placeholder('Selecione um devedor'),
+
+                    FileUpload::make('receipt_file')
+                ->label('Comprovante de Pagamento')
+                ->directory('receipts') // Diretório onde o arquivo será salvo
+                ->acceptedFileTypes(['application/pdf', 'image/jpeg', 'image/png']) // Tipos aceitos
+                ->helperText('Envie um arquivo PDF ou imagem do comprovante.')
+                ->nullable(),
             ]);
     }
 
@@ -62,10 +71,10 @@ class AccountReceivableResource extends Resource
                 TextColumn::make('description')
                     ->label('Descrição')
                     ->searchable(),
-                // Exibindo o "Valor" como moeda
+                
                 TextColumn::make('amount')
                     ->label('Valor')
-                    ->money('BRL') // Formatação como moeda
+                    ->money('BRL') 
                     ->sortable(),
                 TextColumn::make('due_date')
                     ->label('Data de Vencimento')
@@ -73,6 +82,12 @@ class AccountReceivableResource extends Resource
                     ->sortable(),
                 BooleanColumn::make('is_paid')
                     ->label('Pago'),
+
+                IconColumn::make('receipt_file')
+                    ->label('Comprovante')
+                    ->boolean() // Exibe um ícone baseado na presença do valor
+                    ->toggleable(isToggledHiddenByDefault: true),
+
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -83,10 +98,10 @@ class AccountReceivableResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                // Filtro de devedor
-                SelectFilter::make('partner')  // Usar o filtro de devedor
+                
+                SelectFilter::make('partner')
                     ->label('Devedor')
-                    ->options(Partner::all()->pluck('name', 'id')->toArray()) // Opções para filtrar os devedores
+                    ->options(Partner::all()->pluck('name', 'id')->toArray()) 
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -99,7 +114,7 @@ class AccountReceivableResource extends Resource
     public static function getRelations(): array
     {
         return [
-            // Defina relações, se necessário
+            //
         ];
     }
 

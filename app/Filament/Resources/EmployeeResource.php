@@ -65,7 +65,6 @@ class EmployeeResource extends Resource
                 Select::make('type')
                     ->label('Tipo de Usuário')
                     ->options([
-                        'admin' => 'Admin',
                         'common' => 'Comum',
                         'register' => 'Registrado',
                     ])

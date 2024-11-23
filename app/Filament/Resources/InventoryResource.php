@@ -48,7 +48,7 @@ class InventoryResource extends Resource
                 
                     FileUpload::make('image')
                     ->label('Imagem do Produto')
-                    ->image() 
+                    ->image()
                     ->maxSize(1024) // Tamanho máximo
                     ->nullable(),
             ]);

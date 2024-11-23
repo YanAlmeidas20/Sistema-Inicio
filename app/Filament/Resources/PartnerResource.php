@@ -9,6 +9,7 @@ use Filament\Resources\Resource;
 use Filament\Forms;
 use Filament\Tables;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Tables\Columns\TextColumn;
 
@@ -57,6 +58,14 @@ class PartnerResource extends Resource
                 ->visible(fn ($get) => $get('category') === 'Outros') // Só será visível quando "Outros" for selecionado
                 ->required()
                 ->maxLength(255),
+
+            FileUpload::make('documents')
+                ->label('Documentos')
+                ->directory('partner_documents') // Define o diretório onde os arquivos serão armazenados
+                ->multiple() 
+                ->acceptedFileTypes(['application/pdf', 'image/*'])
+                ->helperText('Selecione os documentos relacionados(PDF ou Imagens)')
+                ->required(),
             ]);
     }
 

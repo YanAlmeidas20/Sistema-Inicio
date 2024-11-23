@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('rg')->unique();
             $table->string('admission_date');
             $table->string('phone')->nullable();
-            $table->enum('type', ['admin', 'common']); // Admin or Common
+            $table->enum('type', ['common', 'registered']); // commom or registered
             $table->timestamps();
         });        
     }
