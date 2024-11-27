@@ -6,12 +6,20 @@ use App\Filament\Resources\UserResource\Pages;
 use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Components\TextInput; 
+use Filament\Forms\Components\Select; 
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Forms\Form;
+use Filament\Pages\Page;
+use Filament\Resources\Pages\CreateRecord;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Actions\EditAction; 
 use Filament\Tables\Actions\DeleteBulkAction; 
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Traits\HasRoles;
 use Filament\Tables\Table;
+use Livewire\Livewire;
 
 class UserResource extends Resource
 {
@@ -43,8 +51,10 @@ class UserResource extends Resource
                 TextInput::make('password')
                     ->label('Senha')
                     ->password()
-                    ->required(fn ($context) => $context === 'create')
+                    //->required(fn ($context) => $context === 'create')
+                    ->required(fn (Page $livewire): bool => $livewire instanceof CreateRecord) // Exibe o campo de senha apenas na criação === 'create')
                     ->maxLength(255),
+                Select::make('roles')->multiple()->relationship('roles', 'name')->required(),
             ]);
     }
 
@@ -54,6 +64,7 @@ class UserResource extends Resource
             ->columns([
                 TextColumn::make('name')->label('Nome')->sortable()->searchable(),
                 TextColumn::make('email')->label('Email')->sortable()->searchable(),
+                TextColumn::make('roles.name'),
                # TextColumn::make('created_at')
                   #  ->label('Criado em')
                    # ->dateTime('d/m/Y H:i'),
@@ -78,7 +89,7 @@ class UserResource extends Resource
     }
     protected function beforeSave($record): void
 {
-    if ($this->form->getState('password')) {
+    if ($this->form->getState('password')) { 
         $record->password = bcrypt($this->form->getState('password'));
     }
 }
