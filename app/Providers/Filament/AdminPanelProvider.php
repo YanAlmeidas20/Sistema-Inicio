@@ -13,6 +13,7 @@ use Filament\Navigation\NavigationItem;
 use Filament\Pages\Dashboard;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
+use Filament\Support\Enums\MaxWidth;
 use Filament\Widgets;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
@@ -43,8 +44,12 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
+            ->spa()
+            ->brandLogo(asset('image/LogoSages.jpeg'))
+            ->maxContentWidth(MaxWidth::ScreenTwoExtraLarge) 
+            ->brandLogoHeight('8rem')
             ->colors([
-                'primary' => Color::Amber,
+                'primary' => '#3F5BA2',
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
@@ -87,6 +92,7 @@ class AdminPanelProvider extends PanelProvider
                         ->items([
                             ...InventoryResource::getNavigationItems(),
                         ]),
+                        
                         NavigationGroup::make('Configuração')
                         ->items([
                             NavigationItem::make('Roles')
@@ -107,11 +113,11 @@ class AdminPanelProvider extends PanelProvider
                                 'filament.admin.resources.pages.permissions.view',
                             ))
                             ->url(fn (): string => 'admin/permissions'),
-                        ...UserResource::getNavigationItems()                            
-                        ])    
+                        ...UserResource::getNavigationItems()
+                        ]),
                 ]);
             })
-
+            
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
@@ -126,5 +132,6 @@ class AdminPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
             ]);
+           // FilamentShieldPlugin::make(),
     }
-}
+    }

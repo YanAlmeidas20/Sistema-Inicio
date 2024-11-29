@@ -27,7 +27,6 @@ class UserResource extends Resource
 
     protected static ?string $label = 'Usuários';
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-
     public static function form(Forms\Form $form): Forms\Form
     {
         return $form

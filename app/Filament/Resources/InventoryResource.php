@@ -8,7 +8,6 @@ use Filament\Forms;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Textarea;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
@@ -30,23 +29,28 @@ class InventoryResource extends Resource
                     ->required()
                     ->label('Nome do Item'),
                 
-                    TextInput::make('quantity')
+                TextInput::make('quantity')
                     ->numeric()
                     ->default(0)
                     ->required()
                     ->label('Quantidade'),
-                
-                    TextInput::make('price')
+
+                TextInput::make('minimum_quantity')
+                    ->numeric()
+                    ->default(0)
+                    ->label('Quantidade Mínima'),
+
+                TextInput::make('price')
                     ->numeric()
                     ->default(0.00)
                     ->required()
                     ->label('Preço Unitário'),
 
-                    RichEditor::make('description')
+                RichEditor::make('description')
                     ->label('Descrição do Item')
                     ->required(),
-                
-                    FileUpload::make('image')
+
+                FileUpload::make('image')
                     ->label('Imagem do Produto')
                     ->image()
                     ->maxSize(1024) // Tamanho máximo
@@ -60,7 +64,11 @@ class InventoryResource extends Resource
             ->columns([
                 TextColumn::make('name')->label('Nome'),
                 TextColumn::make('description')->label('Descrição')->limit(50),
-                TextColumn::make('quantity')->label('Quantidade'),
+                TextColumn::make('quantity')
+                    ->label('Quantidade')
+                    ->color(function ($record) {
+                        return $record->quantity <= $record->minimum_quantity ? 'danger' : null;
+                    }),
                 TextColumn::make('price')->money('BRL')->label('Preço'),
                 ImageColumn::make('image')->label('Imagem'), // Exibe a imagem na tabela
                 TextColumn::make('created_at')->label('Criado em')->date(),
@@ -82,6 +90,7 @@ class InventoryResource extends Resource
             'edit' => Pages\EditInventory::route('/{record}/edit'),
         ];
     }
+
     public static function getNavigationGroup(): ?string
     {
         return 'Estoque'; 
@@ -95,5 +104,5 @@ class InventoryResource extends Resource
     public static function getNavigationIcon(): string
     {
         return 'heroicon-o-archive-box';
-}
+    }
 }
