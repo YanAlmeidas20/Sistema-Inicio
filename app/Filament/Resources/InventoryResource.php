@@ -36,6 +36,7 @@ class InventoryResource extends Resource
                     ->label('Quantidade'),
 
                 TextInput::make('minimum_quantity')
+                    ->required()
                     ->numeric()
                     ->default(0)
                     ->label('Quantidade Mínima'),

@@ -52,7 +52,7 @@ class AgendaResource extends Resource
                     ->required()
                     ->nullable(),
 
-                    Select::make('paciente_id') // Relacionamento com pacientes
+                    Select::make('patient_id') // Relacionamento com pacientes
                     ->label('Paciente')
                     ->relationship('paciente', 'nome')
                     ->searchable()
