@@ -45,12 +45,18 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->login()
             ->spa()
-            ->brandLogo(asset('image/LogoSages.jpeg'))
+            ->brandLogo(asset('image/LogoSages.png'))
             ->maxContentWidth(MaxWidth::ScreenTwoExtraLarge) 
             ->brandLogoHeight('8rem')
             ->colors([
-                'primary' => '#3F5BA2',
+                'danger' => Color::Red,
+                'gray' => Color::Zinc,
+                'info' => Color::Blue,
+                'primary' => Color::Sky,
+                'success' => Color::Green,
+                'warning' => Color::Amber,
             ])
+            ->viteTheme('resources/css/filament/admin/theme.css')
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([

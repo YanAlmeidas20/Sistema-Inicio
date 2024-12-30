@@ -16,7 +16,7 @@ use Filament\Tables\Columns\TextColumn;
 class PatientResource extends Resource
 {
     
-    protected static ?string $label = 'Pacientes';
+    protected static ?string $label = 'Clientes';
     protected static ?string $navigationIcon = 'heroicon-o-user';
     protected static ?string $model = \App\Models\Patient::class;
     public static function form(Forms\Form $form): Forms\Form
@@ -178,7 +178,7 @@ class PatientResource extends Resource
 
 public static function getNavigationLabel(): string
 {
-    return 'Pacientes'; // Nome do item no menu
+    return 'Clientes'; // Nome do item no menu
 }
 
 public static function getNavigationIcon(): string
